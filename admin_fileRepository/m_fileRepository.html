@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Repository</title>
+
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+
+  <link rel="stylesheet" href="m_fileRepository.css">
+  <link rel="stylesheet" href="../api/logout/logout-modal.css">
+  
+  <!-- Document Viewers -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Decorative background shapes -->
+  <div class="shape purple"><img src="../assets/Vector 1.png" alt="Purple Shape"></div>
+  <div class="shape yellow"><img src="../assets/Vector 2.png" alt="Yellow Shape"></div>
+  <div class="shape blue"><img src="../assets/Ellipse 138.png" alt="Blue Shape"></div>
+
+  <!-- Glass-morphism blur overlay -->
+  <div class="blur-box"></div>
+
+  <!-- Top header -->
+  <div class="top-header">
+    <div class="logo"><img src="../assets/logo.png" alt="Logo"></div>
+  </div>
+
+  <div class="page-title">File Repository</div>
+
+  <aside class="sidebar collapsed">
+    <!-- Sidebar header -->
+    <header class="sidebar-header">
+      <button class="toggler sidebar-toggler">
+        <span class="material-symbols-rounded">chevron_left</span>
+      </button>
+    </header>
+
+    <nav class="sidebar-nav">
+      <!-- Primary top nav -->
+      <ul class="nav-list primary-nav">
+        <li class="nav-item">
+          <a href="../admin_dashboard/m_dashboard.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">dashboard</span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+          <span class="nav-tooltip">Dashboard</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_userManagement/m_userManagement.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">manage_accounts</span>
+            <span class="nav-label">User Management</span>
+          </a>
+          <span class="nav-tooltip">User Management</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_fileDirectory/m_fileDirectory.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">folder</span>
+            <span class="nav-label">File Directory</span>
+          </a>
+          <span class="nav-tooltip">File Directory</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_messages/m_messages.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">message</span>
+            <span class="nav-label">Messages</span>
+          </a>
+          <span class="nav-tooltip">Messages</span>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">folder_open</span>
+            <span class="nav-label">File Repository</span>
+          </a>
+          <span class="nav-tooltip">File Repository</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_e-signature/m_signature.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">edit_document</span>
+            <span class="nav-label">E-signature</span>
+          </a>
+          <span class="nav-tooltip">E-signature</span>
+        </li>
+      </ul>
+
+      <!-- Secondary bottom nav -->
+      <ul class="nav-list secondary-nav">
+        <li class="nav-item">
+          <a href="../admin_profile/m_profile.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">account_circle</span>
+            <span class="nav-label">Profile</span>
+          </a>
+          <span class="nav-tooltip">Profile</span>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">logout</span>
+            <span class="nav-label">Logout</span>
+          </a>
+          <span class="nav-tooltip">Logout</span>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Date and Time Display -->
+  <div class="datetime-display" id="datetimeDisplay">Loading...</div>
+
+  <!-- ========================= MAIN FILE REPOSITORY CONTENT ========================= -->
+  <main class="repository-content">
+
+    <!-- Layout Container -->
+    <div class="repository-layout">
+
+      <!-- Left Panel: Folder List -->
+      <aside class="folder-panel">
+        <div class="card folder-card">
+          <div class="card-header">
+            <h3 class="card-title">Folders</h3>
+            <button class="btn-create-folder" id="btnCreateFolder" title="Create new folder">
+              <span class="material-symbols-rounded">add</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="folder-list" id="folderList">
+              <!-- Folders rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+
+        <!-- Recent Files Section -->
+        <section class="recent-files-section">
+          <div class="section-header">
+            <h3 class="section-title">Recent Files</h3>
+          </div>
+          <div class="recent-files-row" id="recentFilesRow">
+            <!-- Recent files rendered dynamically -->
+            <div class="placeholder-text">Loading recent files...</div>
+          </div>
+        </section>
+
+        <!-- Files Section -->
+        <section class="files-section">
+          <div class="section-header">
+            <h3 class="section-title">Files</h3>
+            <button class="btn-add-file" id="btnAddFile">
+              <span class="material-symbols-rounded">add</span>
+              Add File
+            </button>
+          </div>
+          <div class="files-grid" id="filesGrid">
+            <!-- Files rendered dynamically -->
+            <div class="placeholder-text">
+              <span class="material-symbols-rounded placeholder-icon">folder_open</span>
+              <p>Please select a folder to view files</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================= CREATE FOLDER MODAL ========================= -->
+  <div class="modal" id="createFolderModal">
+    <div class="modal-overlay" data-modal="createFolderModal"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Folder</h2>
+        <button class="modal-close" data-modal="createFolderModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createFolderForm">
+          <div class="form-group">
+            <label for="folderName" class="form-label">Folder Name</label>
+            <input type="text" id="folderName" class="form-input" placeholder="Enter folder name..." required>
+          </div>
+          
+          <!-- Permissions Section -->
+          <div class="form-group">
+            <label for="createDepartmentSelect" class="form-label">
+              Set Permissions <span style="color: #e74c3c;">*</span>
+            </label>
+            <select id="createDepartmentSelect" class="form-select" required>
+              <option value="">-- Select Department --</option>
+            </select>
+          </div>
+
+          <!-- Employees list with checkboxes -->
+          <div class="permissions-section" id="createPermissionsSection" style="display: none;">
+            <label class="form-label">
+              Grant Access <span style="color: #e74c3c;">*</span>
+            </label>
+            <div class="employees-list-create" id="employeesListCreate">
+              <!-- Employees rendered dynamically -->
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" data-modal="createFolderModal">Cancel</button>
+            <button type="submit" class="btn-primary" id="btnSubmitCreateFolder" disabled>
+              <span class="material-symbols-rounded">check</span>
+              Create Folder
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= FOLDER PERMISSIONS MODAL ========================= -->
+  <div class="modal" id="folderPermissionsModal">
+    <div class="modal-overlay" data-modal="folderPermissionsModal"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Manage Permissions</h2>
+        <button class="modal-close" data-modal="folderPermissionsModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="permissions-container">
+          <!-- Department selector -->
+          <div class="permissions-section">
+            <label for="departmentSelect" class="form-label">Select Department</label>
+            <select id="departmentSelect" class="form-select">
+              <option value="">-- Select Department --</option>
+            </select>
+          </div>
+
+          <!-- Employees list with checkboxes -->
+          <div class="permissions-section">
+            <label class="form-label">Grant Access</label>
+            <div class="employees-list" id="employeesList">
+              <!-- Employees rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="folderPermissionsModal">Cancel</button>
+          <button type="button" class="btn-primary" id="btnSavePermissions">
+            <span class="material-symbols-rounded">check</span>
+            Save Permissions
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= ADD FILES TO FOLDER MODAL ========================= -->
+  <div class="modal" id="addFilesModal">
+    <div class="modal-overlay" data-modal="addFilesModal"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add Files to Folder</h2>
+        <button class="modal-close" data-modal="addFilesModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="files-selector">
+          <!-- Upload Section -->
+          <div class="upload-section">
+            <label for="fileUpload" class="upload-label">
+              <span class="material-symbols-rounded">cloud_upload</span>
+              <span>Upload Files</span>
+            </label>
+            <input type="file" id="fileUpload" multiple hidden accept=".pdf,.doc,.docx,.xls,.xlsx">
+            <div class="uploaded-files-list" id="uploadedFilesList"></div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-section">
+            <div class="search-bar">
+              <span class="material-symbols-rounded search-icon">search</span>
+              <input type="text" id="fileSearchInput" class="search-input" placeholder="Search approved files...">
+            </div>
+          </div>
+
+          <p class="info-text">Select approved files to add to this folder</p>
+          <div class="available-files-list" id="availableFilesList">
+            <!-- Available files rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="addFilesModal">Cancel</button>
+          <button type="button" class="btn-primary" id="btnConfirmAddFiles">
+            <span class="material-symbols-rounded">add_circle</span>
+            Add Selected Files
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= FOLDER MENU MODAL (Edit/Delete) ========================= -->
+  <div class="modal" id="folderMenuModal">
+    <div class="modal-overlay" data-modal="folderMenuModal"></div>
+    <div class="modal-content modal-menu-new">
+      <div class="modal-header-menu">
+        <h2 class="modal-title-menu" id="folderMenuTitle">Folder Options</h2>
+        <button class="modal-close" data-modal="folderMenuModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      
+      <div class="folder-permissions-display" id="folderPermissionsDisplay">
+        <div class="permissions-header">
+          <span class="material-symbols-rounded">group</span>
+          <span class="permissions-label">Permissions</span>
+        </div>
+        <div class="permissions-list" id="permissionsList">
+          <div class="loading-permissions">Loading permissions...</div>
+        </div>
+      </div>
+      
+      <div class="folder-menu-options">
+        <button class="menu-item" id="btnEditFolder">
+          <span class="material-symbols-rounded">edit_document</span>
+          Edit Folder
+        </button>
+        <button class="menu-item" id="btnSetPermissions">
+          <span class="material-symbols-rounded">security</span>
+          Set Permissions
+        </button>
+        <button class="menu-item menu-item-danger" id="btnDeleteFolder">
+          <span class="material-symbols-rounded">delete_outline</span>
+          Delete Folder
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= EDIT FOLDER MODAL ========================= -->
+  <div class="modal" id="editFolderModal">
+    <div class="modal-overlay" data-modal="editFolderModal"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Folder</h2>
+        <button class="modal-close" data-modal="editFolderModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editFolderForm">
+          <div class="form-group">
+            <label for="editFolderName" class="form-label">Folder Name</label>
+            <input type="text" id="editFolderName" class="form-input" placeholder="Enter folder name" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" data-modal="editFolderModal">Cancel</button>
+            <button type="submit" class="btn-primary">
+              <span class="material-symbols-rounded">update</span>
+              Update Folder
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= FILE DETAILS MODAL ========================= -->
+  <div class="modal" id="fileDetailsModal">
+    <div class="modal-overlay" data-modal="fileDetailsModal"></div>
+    <div class="modal-content modal-large">
+      <div class="modal-header">
+        <h2 class="modal-title">File Details</h2>
+        <button class="modal-close" data-modal="fileDetailsModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="file-details-container" id="fileDetailsContainer">
+          <!-- File details rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= DELETE FOLDER CONFIRMATION MODAL ========================= -->
+  <div class="modal" id="deleteFolderModal">
+    <div class="modal-overlay" data-modal="deleteFolderModal"></div>
+    <div class="modal-content modal-confirm">
+      <div class="modal-header">
+        <h2 class="modal-title">Delete Folder</h2>
+        <button class="modal-close" data-modal="deleteFolderModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-message">
+          <span class="material-symbols-rounded confirm-icon">warning</span>
+          <p class="confirm-text">Are you sure you want to delete "<strong id="deleteFolderName"></strong>"?</p>
+          <p class="confirm-subtext">This action cannot be undone.</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="deleteFolderModal">Cancel</button>
+          <button type="button" class="btn-danger" id="btnConfirmDelete">
+            <span class="material-symbols-rounded">delete_outline</span>
+            Delete Folder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= REMOVE FILE CONFIRMATION MODAL ========================= -->
+  <div class="modal" id="removeFileModal">
+    <div class="modal-overlay" data-modal="removeFileModal"></div>
+    <div class="modal-content modal-confirm">
+      <div class="modal-header">
+        <h2 class="modal-title">Remove File</h2>
+        <button class="modal-close" data-modal="removeFileModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-message">
+          <span class="material-symbols-rounded confirm-icon">info</span>
+          <p class="confirm-text">Remove "<strong id="removeFileName"></strong>" from this folder?</p>
+          <p class="confirm-subtext">The file will not be deleted, just removed from the folder.</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="removeFileModal">Cancel</button>
+          <button type="button" class="btn-danger" id="btnConfirmRemove">
+            <span class="material-symbols-rounded">remove_circle</span>
+            Remove File
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+          <!-- File details rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= FILE PREVIEW MODAL ========================= -->
+  <div class="modal-overlay" id="repoPreviewModal">
+    <div class="modal-container repo-preview-modal">
+      <div class="modal-header">
+        <h2 id="repoPreviewTitle">Document Preview</h2>
+        <button class="modal-close" id="closeRepoPreview">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body preview-modal-body" id="repoPreviewContent">
+        <!-- Preview content loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= NOTIFICATION TOAST ========================= -->
+  <div class="toast" id="toast">
+    <span class="toast-icon material-symbols-rounded" id="toastIcon">check_circle</span>
+    <span class="toast-message" id="toastMessage">Action completed successfully</span>
+  </div>
+
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="logout-modal">
+    <div class="logout-modal-overlay"></div>
+    <div class="logout-modal-content">
+      <div class="logout-modal-header">
+        <h3 class="logout-modal-title">
+          <span class="material-symbols-rounded">logout</span>
+          Logout Confirmation
+        </h3>
+        <button class="logout-modal-close">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="logout-modal-body">
+        <div class="logout-modal-icon">
+          <span class="material-symbols-rounded">logout</span>
+        </div>
+        <div class="logout-modal-text">
+          <h3>Are you sure you want to logout?</h3>
+          <p>You will be redirected to the login page and will need to sign in again to access your account.</p>
+        </div>
+      </div>
+      <div class="logout-modal-actions">
+        <button id="btnLogoutCancel" class="logout-modal-btn logout-modal-btn-cancel">
+          Cancel
+        </button>
+        <button id="btnLogoutConfirm" class="logout-modal-btn logout-modal-btn-logout">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="m_fileRepository.js"></script>
+  <script src="../api/logout/logout-modal.js"></script>
+
+</body>
+
+</html>

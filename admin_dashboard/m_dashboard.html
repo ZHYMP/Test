@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+
+  <link rel="stylesheet" href="m_dashboard.css">
+  <link rel="stylesheet" href="../api/logout/logout-modal.css">
+  
+  <!-- Document Viewers -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Decorative background shapes -->
+  <div class="shape purple"><img src="../assets/Vector 1.png" alt="Purple Shape"></div>
+  <div class="shape yellow"><img src="../assets/Vector 2.png" alt="Yellow Shape"></div>
+  <div class="shape blue"><img src="../assets/Ellipse 138.png" alt="Blue Shape"></div>
+
+  <!-- Glass-morphism blur overlay -->
+  <div class="blur-box"></div>
+
+  <!-- Top header -->
+  <div class="top-header">
+    <div class="logo"><img src="../assets/logo.png" alt="Logo"></div>
+  </div>
+
+  <div class="page-title">Dashboard</div>
+
+  <aside class="sidebar collapsed">
+    <!-- Sidebar header -->
+    <header class="sidebar-header">
+      <button class="toggler sidebar-toggler">
+        <span class="material-symbols-rounded">chevron_left</span>
+      </button>
+    </header>
+
+    <nav class="sidebar-nav">
+      <!-- Primary top nav -->
+      <ul class="nav-list primary-nav">
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">dashboard</span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+          <span class="nav-tooltip">Dashboard</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_userManagement/m_userManagement.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">manage_accounts</span>
+            <span class="nav-label">User Management</span>
+          </a>
+          <span class="nav-tooltip">User Management</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_fileDirectory/m_fileDirectory.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">folder</span>
+            <span class="nav-label">File Directory</span>
+          </a>
+          <span class="nav-tooltip">File Directory</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_messages/m_messages.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">message</span>
+            <span class="nav-label">Messages</span>
+          </a>
+          <span class="nav-tooltip">Messages</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_fileRepository/m_fileRepository.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">folder_open</span>
+            <span class="nav-label">File Repository</span>
+          </a>
+          <span class="nav-tooltip">File Repository</span>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_e-signature/m_signature.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">edit_document</span>
+            <span class="nav-label">E-signature</span>
+          </a>
+          <span class="nav-tooltip">E-signature</span>
+        </li>
+      </ul>
+
+      <!-- Secondary bottom nav -->
+      <ul class="nav-list secondary-nav">
+        <li class="nav-item">
+          <a href="../admin_profile/m_profile.html" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">account_circle</span>
+            <span class="nav-label">Profile</span>
+          </a>
+          <span class="nav-tooltip">Profile</span>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon material-symbols-rounded">logout</span>
+            <span class="nav-label">Logout</span>
+          </a>
+          <span class="nav-tooltip">Logout</span>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Date and Time Display -->
+  <div class="datetime-display" id="datetimeDisplay">Loading...</div>
+
+  <!-- ========================= MAIN DASHBOARD CONTENT ========================= -->
+  <main class="dashboard-content">
+
+    <!-- Dashboard Grid Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Document Status -->
+      <section class="card pending-documents-card">
+        <div class="card-header">
+          <h3 class="card-title">Pending Documents</h3>
+        </div>
+        
+        <!-- Department Filter Tabs -->
+        <div class="department-tabs">
+          <button class="tab-btn active" data-department="all">All</button>
+          <button class="tab-btn" data-department="hr">HR</button>
+          <button class="tab-btn" data-department="sales">Sales</button>
+          <button class="tab-btn" data-department="accounting">Accounting</button>
+        </div>
+        
+        <div class="card-body">
+          <div class="documents-table">
+            <div class="table-header">
+              <div class="col-filename">File Name</div>
+              <div class="col-status">Status</div>
+              <div class="col-duedate">Due Date</div>
+              <div class="col-staff">Staff</div>
+            </div>
+            <div class="table-body" id="pendingDocsTableBody">
+              <!-- Placeholder -->
+              <div class="table-row placeholder-row">
+                <div class="col-full">Loading pending documents...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Document Preview Panel -->
+      <section class="card preview-panel" id="previewPanel">
+        <div class="card-body">
+          <div class="preview-content" id="previewContent">
+            <p class="no-selection">Select a document to preview</p>
+          </div>
+        </div>
+        
+        <!-- Action Buttons (Bottom) -->
+        <div class="action-buttons" id="actionButtons" style="display: none;">
+          <button class="btn-action btn-approved" data-action="approved">
+            Approved
+          </button>
+          <button class="btn-action btn-reject" data-action="reject">
+            Declined
+          </button>
+          <button class="btn-action btn-return" data-action="return">
+            Return
+          </button>
+        </div>
+      </section>
+
+      <!-- Bottom Left: Recent Documents -->
+      <section class="card recent-documents-card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Documents</h3>
+        </div>
+        <div class="card-body">
+          <div class="recent-list" id="recentDocsList">
+            <!-- Placeholder -->
+            <div class="recent-item placeholder-row">
+              <p>Loading recent documents...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Right: Recent Activities -->
+      <section class="card recent-activities-card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Activities</h3>
+        </div>
+        <div class="card-body">
+          <div class="activities-list" id="activitiesList">
+            <!-- Placeholder -->
+            <div class="activity-item placeholder-row">
+              <p>Loading recent activities...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ========================= NOTIFICATION TOAST ========================= -->
+  <div class="toast" id="toast">
+    <span class="toast-icon material-symbols-rounded" id="toastIcon">check_circle</span>
+    <span class="toast-message" id="toastMessage">Action completed successfully</span>
+  </div>
+
+  <!-- ========================= FILE PREVIEW MODAL ========================= -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-container preview-modal">
+      <div class="modal-header">
+        <h2 id="previewModalTitle">Document Preview</h2>
+        <button class="modal-close" id="closePreviewModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body preview-modal-body" id="previewModalContent">
+        <p>Loading preview...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= APPROVED CONFIRMATION MODAL ========================= -->
+  <div class="modal-overlay" id="approvedModal">
+    <div class="modal-container action-modal">
+      <div class="modal-header">
+        <h2>Approve Document</h2>
+        <button class="modal-close" id="closeApprovedModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon success-icon">
+          <span class="material-symbols-rounded">check_circle</span>
+        </div>
+        <h3 class="modal-message">Are you sure you want to approve this document?</h3>
+        <p class="modal-filename" id="approvedFilename">Document Name</p>
+        <p class="modal-info">This action will update the file directory status to "Approved" and notify the document owner.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" id="cancelApproved">Cancel</button>
+        <button class="btn-modal-confirm btn-success" id="confirmApproved">
+          <span class="material-symbols-rounded">check_circle</span>
+          Approve Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= DECLINED FEEDBACK MODAL ========================= -->
+  <div class="modal-overlay" id="declinedModal">
+    <div class="modal-container action-modal">
+      <div class="modal-header">
+        <h2>Decline Document</h2>
+        <button class="modal-close" id="closeDeclinedModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon error-icon">
+          <span class="material-symbols-rounded">cancel</span>
+        </div>
+        <h3 class="modal-message">Please provide feedback for declining this document</h3>
+        <p class="modal-filename" id="declinedFilename">Document Name</p>
+        <div class="form-group">
+          <label for="declinedFeedback">Reason for Declining <span class="required">*</span></label>
+          <textarea 
+            id="declinedFeedback" 
+            class="feedback-textarea" 
+            placeholder="Please explain why this document is being declined..."
+            rows="5"
+            required
+          ></textarea>
+          <span class="error-message" id="declinedFeedbackError" style="display: none;">Feedback is required</span>
+        </div>
+        <p class="modal-info">This action will update the file directory status to "Declined" and notify the document owner with your feedback.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" id="cancelDeclined">Cancel</button>
+        <button class="btn-modal-confirm btn-danger" id="confirmDeclined">
+          <span class="material-symbols-rounded">cancel</span>
+          Decline Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= RETURN CONFIRMATION MODAL ========================= -->
+  <div class="modal-overlay" id="returnModal">
+    <div class="modal-container action-modal">
+      <div class="modal-header">
+        <h2>Return Document</h2>
+        <button class="modal-close" id="closeReturnModal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon warning-icon">
+          <span class="material-symbols-rounded">assignment_return</span>
+        </div>
+        <h3 class="modal-message">Return this document for review?</h3>
+        <p class="modal-filename" id="returnFilename">Document Name</p>
+        <div class="form-group">
+          <label for="returnFeedback">Feedback <span class="required">*</span></label>
+          <textarea 
+            id="returnFeedback" 
+            class="feedback-textarea" 
+            placeholder="Please explain why this document is being returned..."
+            rows="4"
+            required
+          ></textarea>
+          <span class="error-message" id="returnFeedbackError" style="display: none;">Feedback is required</span>
+        </div>
+        <p class="modal-info">This action will update the file directory status to "Review" and notify the document owner.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" id="cancelReturn">Cancel</button>
+        <button class="btn-modal-confirm btn-warning" id="confirmReturn">
+          <span class="material-symbols-rounded">assignment_return</span>
+          Return Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="logout-modal">
+    <div class="logout-modal-overlay"></div>
+    <div class="logout-modal-content">
+      <div class="logout-modal-header">
+        <h3 class="logout-modal-title">
+          <span class="material-symbols-rounded">logout</span>
+          Logout Confirmation
+        </h3>
+        <button class="logout-modal-close">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="logout-modal-body">
+        <div class="logout-modal-icon">
+          <span class="material-symbols-rounded">logout</span>
+        </div>
+        <div class="logout-modal-text">
+          <h3>Are you sure you want to logout?</h3>
+          <p>You will be redirected to the login page and will need to sign in again to access your account.</p>
+        </div>
+      </div>
+      <div class="logout-modal-actions">
+        <button id="btnLogoutCancel" class="logout-modal-btn logout-modal-btn-cancel">
+          Cancel
+        </button>
+        <button id="btnLogoutConfirm" class="logout-modal-btn logout-modal-btn-logout">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="m_dashboard.js"></script>
+  <script src="../api/logout/logout-modal.js"></script>
+
+</body>
+
+</html>
