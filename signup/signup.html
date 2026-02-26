@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../signup/signup.css">
+</head>
+
+<body>
+
+    <div class="solid-circles">
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+        <div class="solid"></div>
+    </div>
+
+    <div class="blue-circles">
+        <div class="blue"></div>
+        <div class="blue"></div>
+        <div class="blue"></div>
+        <div class="blue"></div>
+        <div class="blue"></div>
+    </div>
+
+    <div class="light-circles">
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+    </div>
+
+    <div class="blur-circles">
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+        <div class="blur"></div>
+    </div>
+
+    </div>
+
+    <div class="left">
+        <div class="logo">
+            <img src="../assets/logo.png">
+        </div>
+
+        <h1>Hello!<br>Welcome to FlowDocs!</h1>
+
+        <p>Your all-in-one platform to manage, track, and approve documents.
+            Stay organized, save time, and work smarter across departments.</p>
+    </div>
+
+    <div class="right">
+        <h2>Let’s set things up!</h2>
+
+        <form id="signupForm" action="signup_process.php" method="POST">
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm_password" placeholder="Confirm your password" required>
+            </div>
+
+
+            <button type="submit">Sign Up</button>
+        </form>
+
+
+        <script src="signup.js"></script>
+
+    </div>
+
+</body>
+
+</html>
